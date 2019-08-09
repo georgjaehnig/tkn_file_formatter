@@ -1,0 +1,13 @@
+name: Taikonauten File Formatter
+type: module
+php: '7.3'
+# core: '8.x'
+description: 'A formatter for File fields.'
+package: Taikonauten
+dependencies:
+  - drupal:file
+  - drupal:field
+  - drupal:system (>=8.7)
+
+version: '8.x-1.0'
+core: '8.x'

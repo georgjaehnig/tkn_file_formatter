@@ -1,0 +1,10 @@
+<?php
+
+/**
+ * @file
+ * Implements the principal entry points and hooks for the module.
+ *
+ * @{
+ * This module provides a customizable field formatter for the File field.
+ * @}
+ */

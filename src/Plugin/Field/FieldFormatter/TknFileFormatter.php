@@ -66,7 +66,8 @@ class TknFileFormatter extends FileFormatterBase
   public function settingsSummary()
   {
     $summary = [];
-    $summary[] = $this->t('File size unit: ') . $this->getSetting('file_size_unit');
+    $summary[] =
+      $this->t('File size unit: ') . $this->getSetting('file_size_unit');
     return $summary;
   }
 

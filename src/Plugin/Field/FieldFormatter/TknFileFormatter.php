@@ -2,6 +2,7 @@
 
 namespace Drupal\tkn_file_formatter\Plugin\Field\FieldFormatter;
 
+use Drupal\Component\Utility\Bytes;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\FieldItemListInterface;

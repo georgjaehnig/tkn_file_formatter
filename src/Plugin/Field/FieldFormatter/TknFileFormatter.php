@@ -76,7 +76,95 @@ class TknFileFormatter extends FileFormatterBase
    */
   public function viewElements(FieldItemListInterface $items, $langcode)
   {
-    // TODO.
-    return [];
+    // Get entity info (to have its caching settings later).
+    $entity = $items->getEntity();
+
+    $fileSizeUnit = $this->getSetting('file_size_unit');
+
+    $elements = [];
+    foreach ($items as $delta => $item) {
+      // Get the file, URL, size, and MIME type.
+      $fileId = $item->target_id;
+      $file = File::load($fileId);
+
+      // Get the File entity indicated by the file field. If the entity
+      // fails to load, something has become disconnected.
+      if ($file === null) {
+        $url = Url::fromRoute('<none>');
+        $fileSize = 0;
+        $mime = 'application/octet-stream';
+        $filename = $this->t('(Missing file @id)', [
+          '@id' => $fileId
+        ]);
+      } else {
+        $url = Url::fromUri(file_create_url($file->getFileUri()));
+        $fileSize = $file->getSize();
+        $mime = $file->getMimeType();
+        $filename = $file->getFilename();
+      }
+
+      // Convert according to File Size Unit.
+      switch ($fileSizeUnit) {
+        case 'GB':
+          $fileSizeConverted = $fileSize / pow(Bytes::KILOBYTE, 3);
+          break;
+        case 'MB':
+          $fileSizeConverted = $fileSize / pow(Bytes::KILOBYTE, 2);
+          break;
+        case 'KB':
+          $fileSizeConverted = $fileSize / Bytes::KILOBYTE;
+          break;
+        default:
+          $fileSizeConverted = $fileSize;
+          break;
+      }
+
+      // Have a rounded number.
+      $fileSizeConverted = round($fileSizeConverted);
+
+      // Set element.
+      // Wrap in div.
+      $elements[$delta] = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => [
+          'class' => ['tkn-file-formatter'],
+        ],
+        // Filename in div.
+        'filename' => [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#value' => $filename,
+          '#attributes' => [
+            'class' => ['file filename'],
+          ]
+        ],
+        // Mimetype and Size in another line.
+        'mime_and_size' => [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          'mime' => [
+            '#type' => 'html_tag',
+            '#tag' => 'span',
+            '#value' => $mime,
+            '#attributes' => [
+              'class' => ['mime'],
+            ]
+          ],
+          'size' => [
+            '#type' => 'html_tag',
+            '#tag' => 'span',
+            '#value' => ' (' .  $fileSizeConverted .  ' ' .  $fileSizeUnit .  ')',
+            '#attributes' => [
+              'class' => ['size'],
+            ]
+          ],
+        ],
+        '#cache' => [
+          'tags' => $entity->getCacheTags()
+        ]
+      ];
+    }
+    return $elements;
   }
 }

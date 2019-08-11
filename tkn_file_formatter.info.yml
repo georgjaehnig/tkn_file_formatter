@@ -1,6 +1,6 @@
 name: Taikonauten File Formatter
 type: module
-php: '7.3'
+php: '7.2'
 # core: '8.x'
 description: 'A formatter for File fields.'
 package: Taikonauten

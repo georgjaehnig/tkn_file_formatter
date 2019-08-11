@@ -1,0 +1,7 @@
+field.formatter.settings.tkn_file_formatter:
+  type: mapping
+  label: 'File Size Unit'
+  mapping:
+    file_size_unit:
+      type: string
+      label: 'File Size Unit'
